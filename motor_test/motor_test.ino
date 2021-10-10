@@ -35,7 +35,8 @@ void loop()
     Serial.print("stopped, ");
     break;
   }
-  if (running = true)
+  // This should make ThInE motor wait for the serial command
+  if (running == true)
   {
 
     // Set the spinning direction clockwise:
