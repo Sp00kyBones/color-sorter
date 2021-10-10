@@ -35,7 +35,7 @@ void loop()
     Serial.print("stopped, ");
     break;
   }
-  if (running = true)
+  if (running == true)
   {
 
     // Set the spinning direction clockwise:
