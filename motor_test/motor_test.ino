@@ -35,7 +35,7 @@ void loop()
     Serial.print("stopped, ");
     break;
   }
-  // This should make th motor wait for the serial command
+  // This should make ThInE motor wait for the serial command
   if (running == true)
   {
 
