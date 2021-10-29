@@ -31,8 +31,10 @@ void setup()
   pinMode(dirPinR, OUTPUT);
   pinMode(motor5V, OUTPUT);
   pinMode(LED, OUTPUT);
+
   Serial.print("\nChecking color sensor connections");
   delay(500);
+
   for (int x = 0; x <= 3; x++)
   {
     digitalWrite(LED, LOW);
@@ -41,6 +43,7 @@ void setup()
     Serial.print(".");
     delay(1000);
   }
+
   if (tcs.begin())
   {
     Serial.println("\nSensor detected");
@@ -53,6 +56,7 @@ void setup()
     while (1)
       ; // halt!
   }
+
   // defining parameters for red green blue readings
   for (int i = 0; i < 256; i++)
   {
@@ -72,172 +76,190 @@ void loop()
     running = true;
     digitalWrite(motor5V, HIGH);
     delay(1000);
-    Serial.print("Motors energized \n");
+    Serial.print("[DEBUG] Motors energized \n");
     delay(3000);
-    Serial.print("Commencing 'MOTOR TEST' sequence");
+    Serial.print("[DEBUG] Commencing 'MOTOR TEST' sequence");
     delay(3000);
-    // motor test sequence:
-    for (int x = 0; x <= 4; x++)
-    { // test sequence consists of 4 cycles
+    break;
+  case 'N':
+    // example case
+    break;
+  case 'A':
+    // another example case
+    break;
+  case NULL:
+    // something went seriously wrong
+    break;
+  case default:
+    Serial.print("[WARNING] Switch did not understand case value.");
+    break;
+  } 
+  // Spooky - not sure if you wanted the for loops in your switch case logic, but I've added the default
+  //          case and closed the conditional suite. You can move your logic back in the approperiate cases.
 
-      // Stepping R-motor CW & L-motor CCW ("CRADLE" position)
-      digitalWrite(dirPinR, LOW); // writing dirPin LOW = CW
-      for (int i = 0; i < stepsPerRevolution * 2; i++)
-      {
-        digitalWrite(stepPinR, HIGH); // writing stepPin HIGH = on
-        delayMicroseconds(4000);      // how fast the motor will turn, as value increases motor rotates slower
-        digitalWrite(stepPinR, LOW);  // writing stepPin LOW = off
-        delayMicroseconds(4000);
-        digitalWrite(dirPinL, HIGH); // writing dirPin HIGH = CCW
-        digitalWrite(stepPinL, HIGH);
-        delayMicroseconds(4000);
-        digitalWrite(stepPinL, LOW);
-        delayMicroseconds(4000);
-      }
+  // TODO: pull these motor actions into their own class
+  // motor test sequence:
+  for (int x = 0; x <= 4; x++)
+  { // test sequence consists of 4 cycles
 
-      delay(1000);
-      // Stepping R-motor CCW & L-motor CW ("RED ball" position)
-      digitalWrite(dirPinR, HIGH);
-      for (int i = 0; i < stepsPerRevolution; i++)
-      {
-        digitalWrite(stepPinR, HIGH);
-        delayMicroseconds(4000);
-        digitalWrite(stepPinR, LOW);
-        delayMicroseconds(4000);
-        digitalWrite(dirPinL, LOW);
-        digitalWrite(stepPinL, HIGH);
-        delayMicroseconds(4000);
-        digitalWrite(stepPinL, LOW);
-        delayMicroseconds(4000);
-      }
-
-      delay(1000);
-      // Stepping R-motor CW & L-motor CCW (Return to "CRADLE" position)
-      digitalWrite(dirPinR, LOW);
-      for (int i = 0; i < stepsPerRevolution; i++)
-      {
-        digitalWrite(stepPinR, HIGH);
-        delayMicroseconds(4000);
-        digitalWrite(stepPinR, LOW);
-        delayMicroseconds(4000);
-        digitalWrite(dirPinL, HIGH);
-        digitalWrite(stepPinL, HIGH);
-        delayMicroseconds(4000);
-        digitalWrite(stepPinL, LOW);
-        delayMicroseconds(4000);
-      }
-
-      delay(1000);
-      // Stepping R-motor CW & L-motor CW ("GREEN ball" position)
-      digitalWrite(dirPinR, LOW);
-      digitalWrite(dirPinL, LOW);
-      for (int i = 0; i < stepsPerRevolution; i++)
-      {
-        digitalWrite(stepPinR, HIGH);
-        delayMicroseconds(4000);
-        digitalWrite(stepPinL, HIGH);
-        delayMicroseconds(4000);
-        digitalWrite(stepPinR, LOW);
-        delayMicroseconds(4000);
-        digitalWrite(stepPinL, LOW);
-        delayMicroseconds(4000);
-        digitalWrite(stepPinL, HIGH);
-        delayMicroseconds(4000);
-        digitalWrite(stepPinL, LOW);
-        delayMicroseconds(4000);
-      }
-
-      delay(1000);
-      // Stepping R-motor CCW & L-motor CCW (Return to "CRADLE" position
-      digitalWrite(dirPinR, HIGH);
-      digitalWrite(dirPinL, HIGH);
-      for (int i = 0; i < stepsPerRevolution; i++)
-      {
-        digitalWrite(stepPinR, HIGH);
-        delayMicroseconds(4000);
-        digitalWrite(stepPinL, HIGH);
-        delayMicroseconds(4000);
-        digitalWrite(stepPinR, LOW);
-        delayMicroseconds(4000);
-        digitalWrite(stepPinL, LOW);
-        delayMicroseconds(4000);
-        digitalWrite(stepPinL, HIGH);
-        delayMicroseconds(4000);
-        digitalWrite(stepPinL, LOW);
-        delayMicroseconds(4000);
-      }
-
-      delay(1000);
-      // Stepping R-motor CCW & L-motor CCW ("BLUE ball" position)
-      digitalWrite(dirPinR, HIGH);
-      digitalWrite(dirPinL, HIGH);
-      for (int i = 0; i < stepsPerRevolution; i++)
-      {
-        digitalWrite(stepPinR, HIGH);
-        delayMicroseconds(4000);
-        digitalWrite(stepPinL, HIGH);
-        delayMicroseconds(4000);
-        digitalWrite(stepPinR, LOW);
-        delayMicroseconds(5000);
-        digitalWrite(stepPinL, LOW);
-        delayMicroseconds(4000);
-        digitalWrite(stepPinR, HIGH);
-        delayMicroseconds(4000);
-        digitalWrite(stepPinR, LOW);
-        delayMicroseconds(5000);
-      }
-
-      delay(1000);
-      // Stepping R-motor CW & L-motor CW (Return to "CRADLE" position)
-      digitalWrite(dirPinR, LOW);
-      digitalWrite(dirPinL, LOW);
-      for (int i = 0; i < stepsPerRevolution; i++)
-      {
-        digitalWrite(stepPinR, HIGH);
-        delayMicroseconds(4000);
-        digitalWrite(stepPinL, HIGH);
-        delayMicroseconds(4000);
-        digitalWrite(stepPinR, LOW);
-        delayMicroseconds(4000);
-        digitalWrite(stepPinL, LOW);
-        delayMicroseconds(4000);
-        digitalWrite(stepPinR, HIGH);
-        delayMicroseconds(4000);
-        digitalWrite(stepPinR, LOW);
-        delayMicroseconds(4000);
-      }
-
-      delay(1000);
-      // Stepping R-motor CW & L-motor CCW (Return to "Open" position)
-      digitalWrite(dirPinR, HIGH);
-      for (int i = 0; i < stepsPerRevolution * 2; i++)
-      {
-        digitalWrite(stepPinR, HIGH);
-        delayMicroseconds(4000);
-        digitalWrite(stepPinR, LOW);
-        delayMicroseconds(4000);
-        digitalWrite(dirPinL, LOW);
-        digitalWrite(stepPinL, HIGH);
-        delayMicroseconds(4000);
-        digitalWrite(stepPinL, LOW);
-        delayMicroseconds(4000);
-      }
-
-      delay(1000);
-      Serial.print("."); // visual indication one cycle completed
+    // Stepping R-motor CW & L-motor CCW ("CRADLE" position)
+    digitalWrite(dirPinR, LOW); // writing dirPin LOW = CW
+    for (int i = 0; i < stepsPerRevolution * 2; i++)
+    {
+      digitalWrite(stepPinR, HIGH); // writing stepPin HIGH = on
+      delayMicroseconds(4000);      // how fast the motor will turn, as value increases motor rotates slower
+      digitalWrite(stepPinR, LOW);  // writing stepPin LOW = off
+      delayMicroseconds(4000);
+      digitalWrite(dirPinL, HIGH); // writing dirPin HIGH = CCW
+      digitalWrite(stepPinL, HIGH);
+      delayMicroseconds(4000);
+      digitalWrite(stepPinL, LOW);
+      delayMicroseconds(4000);
     }
-  }
-  if (running == true)
-  {
-    delay(3000);
-    Serial.println("\t'MOTOR TEST' complete");
+
     delay(1000);
-    digitalWrite(motor5V, LOW);
-    Serial.println("Motor de-energized");
-    delay(2000);
-    Serial.println("You may now fill the hopper");
-    delay(5000);
-    Serial.println("After you fill the hopper, ensure that the enclosure is closed and enter Y to start sorting the balls. \t***press N to stop the process***");
-    running = false;
+    // Stepping R-motor CCW & L-motor CW ("RED ball" position)
+    digitalWrite(dirPinR, HIGH);
+    for (int i = 0; i < stepsPerRevolution; i++)
+    {
+      digitalWrite(stepPinR, HIGH);
+      delayMicroseconds(4000);
+      digitalWrite(stepPinR, LOW);
+      delayMicroseconds(4000);
+      digitalWrite(dirPinL, LOW);
+      digitalWrite(stepPinL, HIGH);
+      delayMicroseconds(4000);
+      digitalWrite(stepPinL, LOW);
+      delayMicroseconds(4000);
+    }
+
+    delay(1000);
+    // Stepping R-motor CW & L-motor CCW (Return to "CRADLE" position)
+    digitalWrite(dirPinR, LOW);
+    for (int i = 0; i < stepsPerRevolution; i++)
+    {
+      digitalWrite(stepPinR, HIGH);
+      delayMicroseconds(4000);
+      digitalWrite(stepPinR, LOW);
+      delayMicroseconds(4000);
+      digitalWrite(dirPinL, HIGH);
+      digitalWrite(stepPinL, HIGH);
+      delayMicroseconds(4000);
+      digitalWrite(stepPinL, LOW);
+      delayMicroseconds(4000);
+    }
+
+    delay(1000);
+    // Stepping R-motor CW & L-motor CW ("GREEN ball" position)
+    digitalWrite(dirPinR, LOW);
+    digitalWrite(dirPinL, LOW);
+    for (int i = 0; i < stepsPerRevolution; i++)
+    {
+      digitalWrite(stepPinR, HIGH);
+      delayMicroseconds(4000);
+      digitalWrite(stepPinL, HIGH);
+      delayMicroseconds(4000);
+      digitalWrite(stepPinR, LOW);
+      delayMicroseconds(4000);
+      digitalWrite(stepPinL, LOW);
+      delayMicroseconds(4000);
+      digitalWrite(stepPinL, HIGH);
+      delayMicroseconds(4000);
+      digitalWrite(stepPinL, LOW);
+      delayMicroseconds(4000);
+    }
+
+    delay(1000);
+    // Stepping R-motor CCW & L-motor CCW (Return to "CRADLE" position
+    digitalWrite(dirPinR, HIGH);
+    digitalWrite(dirPinL, HIGH);
+    for (int i = 0; i < stepsPerRevolution; i++)
+    {
+      digitalWrite(stepPinR, HIGH);
+      delayMicroseconds(4000);
+      digitalWrite(stepPinL, HIGH);
+      delayMicroseconds(4000);
+      digitalWrite(stepPinR, LOW);
+      delayMicroseconds(4000);
+      digitalWrite(stepPinL, LOW);
+      delayMicroseconds(4000);
+      digitalWrite(stepPinL, HIGH);
+      delayMicroseconds(4000);
+      digitalWrite(stepPinL, LOW);
+      delayMicroseconds(4000);
+    }
+
+    delay(1000);
+    // Stepping R-motor CCW & L-motor CCW ("BLUE ball" position)
+    digitalWrite(dirPinR, HIGH);
+    digitalWrite(dirPinL, HIGH);
+    for (int i = 0; i < stepsPerRevolution; i++)
+    {
+      digitalWrite(stepPinR, HIGH);
+      delayMicroseconds(4000);
+      digitalWrite(stepPinL, HIGH);
+      delayMicroseconds(4000);
+      digitalWrite(stepPinR, LOW);
+      delayMicroseconds(5000);
+      digitalWrite(stepPinL, LOW);
+      delayMicroseconds(4000);
+      digitalWrite(stepPinR, HIGH);
+      delayMicroseconds(4000);
+      digitalWrite(stepPinR, LOW);
+      delayMicroseconds(5000);
+    }
+
+    delay(1000);
+    // Stepping R-motor CW & L-motor CW (Return to "CRADLE" position)
+    digitalWrite(dirPinR, LOW);
+    digitalWrite(dirPinL, LOW);
+    for (int i = 0; i < stepsPerRevolution; i++)
+    {
+      digitalWrite(stepPinR, HIGH);
+      delayMicroseconds(4000);
+      digitalWrite(stepPinL, HIGH);
+      delayMicroseconds(4000);
+      digitalWrite(stepPinR, LOW);
+      delayMicroseconds(4000);
+      digitalWrite(stepPinL, LOW);
+      delayMicroseconds(4000);
+      digitalWrite(stepPinR, HIGH);
+      delayMicroseconds(4000);
+      digitalWrite(stepPinR, LOW);
+      delayMicroseconds(4000);
+    }
+
+    delay(1000);
+    // Stepping R-motor CW & L-motor CCW (Return to "Open" position)
+    digitalWrite(dirPinR, HIGH);
+    for (int i = 0; i < stepsPerRevolution * 2; i++)
+    {
+      digitalWrite(stepPinR, HIGH);
+      delayMicroseconds(4000);
+      digitalWrite(stepPinR, LOW);
+      delayMicroseconds(4000);
+      digitalWrite(dirPinL, LOW);
+      digitalWrite(stepPinL, HIGH);
+      delayMicroseconds(4000);
+      digitalWrite(stepPinL, LOW);
+      delayMicroseconds(4000);
+    }
+
+    delay(1000);
+    Serial.print("."); // visual indication one cycle completed
   }
+}
+if (running == true)
+{
+  delay(3000);
+  Serial.println("\t'MOTOR TEST' complete");
+  delay(1000);
+  digitalWrite(motor5V, LOW);
+  Serial.println("Motor de-energized");
+  delay(2000);
+  Serial.println("You may now fill the hopper");
+  delay(5000);
+  Serial.println("After you fill the hopper, ensure that the enclosure is closed and enter Y to start sorting the balls. \t***press N to stop the process***");
+  running = false;
+}
 }
