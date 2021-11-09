@@ -2,6 +2,7 @@
 #include "Adafruit_TCS34725.h"
 #include <AccelStepper.h>
 #include <MultiStepper.h>
+#include <cstdlib>
 
 // Define connections and steps per revolution:
 #define dirPinL 2
@@ -53,8 +54,7 @@ void setup()
   else
   {
     Serial.println("No TCS34725 found ... check your connections");
-    while (1)
-      ; // halt!
+    std::exit(0); // I think this is what you mean -> exit program because there is no color sensor (right?)
   }
 
   // defining parameters for red green blue readings
@@ -93,7 +93,7 @@ void loop()
   case default:
     Serial.print("[WARNING] Switch did not understand case value.");
     break;
-  } 
+  }
   // Spooky - not sure if you wanted the for loops in your switch case logic, but I've added the default
   //          case and closed the conditional suite. You can move your logic back in the approperiate cases.
 
